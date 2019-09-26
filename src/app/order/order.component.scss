@@ -1,0 +1,198 @@
+@import '../../assets/scss/material-dashboard.scss';
+
+.card.card-manage {
+    [data-background-color] {
+        margin: -20px 15px 0;
+        border-radius: 3px;
+        padding: 15px;
+        position: absolute;
+    }
+
+    [data-background-color="purple"] {
+        background: linear-gradient(60deg, $purple-400, $purple-600);
+        @include shadow-big-color($brand-primary);
+    }
+
+    .card-header.card-header-icon {
+        float: left;
+
+        i {
+            width: 33px;
+            height: 33px;
+            text-align: center;
+            line-height: 33px;
+        }
+    }
+
+    .card-content {
+        padding: 15px 20px;
+        position: relative;
+
+        .row {
+            .col-md-3 {
+                .card {
+                    .card-header {
+                        border-bottom: 1px solid rgba(0, 0, 0, .125);
+
+                        &.bg-customer {
+                            background: #eee;
+                        }
+                    }
+
+                    .card-body {
+                        border-bottom: 1px solid rgba(0, 0, 0, .125);
+
+                        .wrapper-info {
+                            display: flex;
+                            // height: 43px;
+
+                            .material-icons {
+                                font-size: 18px;
+                                margin: 2px 4px;
+                            }
+
+                            .empty-money {
+                                color: #cf3a3b;
+                            }
+                        }
+                    }
+
+                    .card-footer {
+                        .wrapper-footer {
+                            display: flex;
+
+                            .material-icons {
+                                margin: 0 5px;
+                            }
+                        }
+
+                        .btn {
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .button {
+            display: flex;
+            justify-content: flex-end;
+
+            .btn {
+                line-height: 0.58;
+            }
+        }
+
+        .nav-link {
+            color: #000;
+
+            &.active {
+                background: #00bcd4;
+                color: #fff;
+            }
+        }
+
+        .tab-content {
+            .card-header {
+                background: #798b9b;
+                color: #fff;
+                padding: 0.75rem 0.25rem;
+            }
+        }
+    }
+
+    .card-header.card-header-icon+.card-content .card-title {
+        padding-bottom: 15px;
+    }
+
+    .card-title-custome {
+        margin-left: 74px;
+    }
+
+    .form-group.form-group-sm {
+        padding-bottom: 10px;
+        margin: 20px 0 0 0;
+        font-size: 11px;
+    }
+
+    .table-custom {
+        margin-bottom: 15px;
+    }
+
+    .icon-accept {
+        background: #f44336ed;
+        color: #fff;
+    }
+
+    .icon-reject {
+        background: #4caf50;
+        color: #fff;
+    }
+}
+
+.detail-order {
+    .info-person {
+        display: flex;
+
+        .material-icons {
+            font-size: 20px;
+        }
+    }
+}
+
+.contact {
+    border: 1px solid;
+
+    .card-header {
+        border-bottom: 1px solid burlywood;
+    }
+}
+
+.mat-dialog-actions {
+    justify-content: flex-end;
+}
+
+.text-reject {
+    width: 100%;
+    // margin: 0 45px;
+    padding: 10px;
+}
+
+.add-order {
+    .info-user {
+        margin-top: 10px;
+
+        .before {
+            background: #649665;
+            padding: 10px;
+            color: #fff;
+            border-radius: 5px;
+            position: relative;
+
+            &::before {
+                content: '';
+                width: 300px;
+                height: 2px;
+                background: #649665;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                opacity: 0.5;
+            }
+        }
+
+        .input-info {
+            margin-top: 25px;
+
+            .service {
+                .mat-radio-button {
+                    margin: 0 15px;
+                }
+            }
+        }
+    }
+}
+
+.page {
+    justify-content: flex-end;
+}

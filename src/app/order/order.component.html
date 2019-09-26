@@ -1,0 +1,295 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-manage">
+          <div class="card-header card-header-icon" data-background-color="purple">
+            <i class="material-icons">assignment</i>
+          </div>
+          <div class="card-content">
+            <div class="button mt-5">
+              <div class="search">
+                <input type="text" matInput [formControl]="search">
+                <button class="btn btn-info" (click)="searchOrder()">
+                  <i class="material-icons">search</i>
+                </button>
+              </div>
+              <div class="toolbar">
+                <button class="btn btn-info" (click)="onAddOrderModal()">
+                  <i class="material-icons">add_box</i>
+                </button>
+              </div>
+            </div>
+            <ul class="nav nav-pills mt-5" role="tablist">
+              <li class="nav-item" *ngFor="let pill of listTabs, let i = index" (click)=changeTab(pill.key)>
+                <a class="nav-link" [ngClass]="{'active': pill.key === 'created' }" data-toggle="pill" href="#tab-{{i}}"
+                  role="tab">{{pill.text}}
+                </a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane fade" [ngClass]="{'active': pill.key === 'created', 'show': pill.key === 'created' }"
+                id="tab-{{i}}" *ngFor="let pill of listTabs, let i = index">
+                <div class="row mt-2">
+                  <div class="col-md-3 card-deck"
+                    *ngFor="let order of listOrder | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                    <div class="card">
+                      <div class="card-header text-center font-weight-bolder">
+                        {{order['_id']}}
+                      </div>
+                      <div class="card-body">
+                        <div class="wrapper-info mb-2">
+                          <i class="material-icons">person</i>
+                          <span>{{order['ReceiverName']}}</span>
+                        </div>
+                        <div class="wrapper-info mb-2">
+                          <i class="material-icons">location_on</i>
+                          <span>{{order['ReceiverAddress']}}</span>
+                        </div>
+                        <div class="wrapper-info mb-2">
+                          <i class="material-icons">phone</i>
+                          <span>{{order['ReceiverPhone']}}</span>
+                        </div>
+                        <div class="wrapper-info mb-2">
+                          <i class="material-icons">local_grocery_store</i>
+                          <span>
+                            {{order['Kind'] === '1'? 'Khác (Thời trang, Mỹ Phẩm, Gia dụng...)' : 'Đồ ăn, Đồ uống'}}
+                          </span>
+                        </div>
+                        <div class="wrapper-info mb-2">
+                          <i class="material-icons">public</i>
+                          <span>{{order['Service']}}</span>
+                        </div>
+                        <div class="wrapper-info mb-2">
+                          <i class="material-icons">hourglass_full</i>
+                          <span>{{bindingTextStatus(order.OrderStatus.name)}}</span>
+                        </div>
+                        <div class="wrapper-info mb-2">
+                          <i class="material-icons">attach_money</i>
+                          <span>{{order['Cost']}} VNĐ</span>
+                        </div>
+                        <div class="wrapper-info">
+                          <i class="material-icons">access_time</i>
+                          <span>{{order['CreatedTime'] | amDateFormat: 'DD/MM/YYYY, h:mm a' }}</span>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                        <button class="btn btn-warning btn-link" (click)="onAddOrderModal(order)">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-danger btn-link" (click)="delete(order.OrderId)">
+                          <i class="material-icons">cancel</i>
+                        </button>
+                        <button class="btn btn-info btn-link" (click)="sendToAgency(order)">
+                          <i class="material-icons">send</i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ngb-pagination class="d-flex justify-content-end" [collectionSize]="totalCount" [(page)]="page"
+                  [pageSize]="pageSize" [disabled]="totalCount === 0" (pageChange)="pageChange($event, pill.key)"></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal show detail wating order -->
+    <ng-template #detailOrder>
+      <h1 mat-dialog-title class="text-center">#{{Order.code}}</h1>
+      <div mat-dialog-content class="detail-order">
+        <div class="row">
+          <div class="col-md-3">
+            <h4 mat-dialog-title class="">Người gửi:</h4>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons ">person</i></span>
+              <p>{{Order.sendername}}</p>
+            </div>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">phone</i></span>
+              <p>{{Order.senderphone}}</p>
+            </div>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">place</i></span>
+              <p>{{Order.senderaddress}}</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <h4 mat-dialog-title class="">Người nhận:</h4>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">person</i></span>
+              <p>{{Order.recievername}}</p>
+            </div>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">phone</i></span>
+              <p>{{Order.recieverphone}}</p>
+            </div>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">place</i></span>
+              <p>{{Order.recieveraddress}}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <!-- <h3 mat-dialog-title class="text-center">Thông tin khác</h3> -->
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">opacity</i></span>
+              <p>{{Order.weigh}} Kg</p>
+            </div>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">layers</i></span>
+              <p>{{Order.kind}}</p>
+            </div>
+            <div class="info-person">
+              <span class="mr-2"><i class="material-icons">local_shipping</i></span>
+              <p>{{Order.service}}</p>
+            </div>
+            <div class="info-person">
+              <span class="mr-2">
+                <p style="font-weight: bold">Ghi chú:</p>
+              </span>
+              <p>{{Order.note}}</p>
+            </div>
+          </div>
+
+        </div>
+        <div class="row" *ngIf="!isReject">
+          <div class="col-md-6 card contact">
+            <div class="card-header text-center">
+              Thông tin liên hệ của khách hàng
+            </div>
+            <div class="info-person pt-4" style="font-size: 16px">
+              <div class="info-person mr-5">
+                <span class="mr-2"><i class="material-icons">local_library</i></span>
+                <p>{{Order.createdUserName}}</p>
+              </div>
+              <div class="info-person">
+                <span class="mr-2"><i class="material-icons">local_phone</i></span>
+                <p>{{Order.customerPhone}}</p>
+              </div>
+            </div>
+            <div class="info-person" style="font-size: 16px">
+              <span class="mr-2"><i class="material-icons">my_location</i></span>
+              <p>{{Order.addressTaken}}</p>
+            </div>
+          </div>
+          <div class="col-md-6 card contact">
+            <mat-form-field>
+              <mat-label>Phân đơn cho shipper</mat-label>
+              <input type="text" placeholder="Vui lòng chọn" matInput [matAutocomplete]="auto"
+                [formControl]="formShipper" class="select-custom">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="let shipper of filteredOptions" [value]="shipper.id">
+                  {{shipper.fullname}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row" *ngIf="isReject">
+          <textarea matInput placeholder="Nhập lý do từ chối" class="text-reject" required></textarea>
+        </div>
+      </div>
+      <div mat-dialog-actions>
+        <button mat-button mat-dialog-close mat-raised-button class="btn btn-danger">Hủy</button>
+        <button mat-button mat-raised-button class="btn btn-primary save" align='end'>Xác nhận</button>
+        <button mat-button mat-raised-button class="btn btn-primary save" align='end' (click)="openModalReject()">Từ
+          chối</button>
+      </div>
+    </ng-template>
+    <!-- Modal enter reason reject -->
+    <ng-template #reject>
+      <textarea matInput placeholder="Nhập lý do từ chối" class="text-reject" required></textarea>
+      <div mat-dialog-actions>
+        <button mat-button mat-raised-button mat-dialog-close class="btn btn-primary save" align='end'
+          (click)="rejectOrder()">OK</button>
+      </div>
+    </ng-template>
+    <ng-template #addOrder>
+      <h1 mat-dialog-title class="text-center">Tạo mới đơn hàng</h1>
+      <div mat-dialog-content class="add-order">
+        <form [formGroup]="addForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="info-user">
+                <span class="before">Người gửi</span>
+                <div class="input-info">
+                  <mat-form-field>
+                    <input matInput placeholder="Họ và tên" formControlName="SenderName">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Số điện thoại" formControlName="SenderPhone">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Địa chỉ" formControlName="SenderAddress">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-user">
+                <span class="before">Người nhận</span>
+                <div class="input-info">
+                  <mat-form-field>
+                    <input matInput placeholder="Họ và tên" formControlName="ReceiverName">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Số điện thoại" formControlName="ReceiverPhone">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Địa chỉ" formControlName="ReceiverAddress">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-user">
+                <span class="before">Gói hàng</span>
+                <div class="input-info">
+                  <mat-form-field>
+                    <mat-label>Loại hàng*</mat-label>
+                    <mat-select formControlName="Kind">
+                      <mat-option value="0">Đồ ăn, Đồ uống</mat-option>
+                      <mat-option value="1">Khác (Thời trang, Mỹ Phẩm, Gia dụng...)</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Khối lượng chính xác (ước tính)" type="number"
+                      formControlName="Weight">
+                    <span matSuffix>Kg</span>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Giá trị gói hàng" type="number" class="money" formControlName="Cost">
+                    <span matPrefix>$&nbsp;</span>
+                    <span matSuffix>VNĐ</span>
+                  </mat-form-field>
+                  <div class="mb-2 service">
+                    <mat-label>Dịch vụ*</mat-label>
+                    <mat-radio-group formControlName="Service">
+                      <mat-radio-button value="Chuẩn">Chuẩn</mat-radio-button>
+                      <mat-radio-button value="Nhanh">Nhanh</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <mat-form-field>
+                    <input matInput placeholder="Ghi chú" formControlName="Note">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row">
+            
+          </div> -->
+        </form>
+      </div>
+      <div mat-dialog-actions>
+        <button mat-button mat-raised-button class="btn btn-danger" (click)="closeDialog()">Hủy</button>
+        <button mat-button mat-raised-button class="btn btn-primary save" align='end' (click)="saveNewOrder()"
+          [disabled]="!addForm.valid" *ngIf="!isUpdate">Lưu</button>
+        <button mat-button mat-raised-button class="btn btn-primary save" align='end' *ngIf="isUpdate"
+          (click)="update()">Cập nhật</button>
+      </div>
+    </ng-template>
+  </div>
+</div>

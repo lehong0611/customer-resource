@@ -1,5 +1,6 @@
 $c-logo: #046767;
 $c-nav: #1f9c9c;
+
 body {
     margin: 0;
     transition: all 1s ease-in-out;
@@ -41,6 +42,7 @@ header {
     background: $c-nav;
     transform: translateX(-100%);
     transition: all 1s ease-in-out;
+
     @media screen and (min-width: 768px) {
         height: 100%;
         display: flex;
@@ -60,9 +62,11 @@ header {
 
 .header__item {
     padding: 10px 20px;
+
     @media screen and (min-width: 768px) {
         padding: 10px;
     }
+
     a {
         margin: 0 10px;
         position: relative;
@@ -70,16 +74,20 @@ header {
         transition: all 1s ease-in-out;
         color: #ffffff;
         border-bottom: 1px solid #ffffff;
+
         @media screen and (min-width: 768px) {
             color: $c-nav;
             font-size: 15px;
         }
+
         @media screen and (min-width: 1024px) {
             font-size: 16px;
         }
+
         @media screen and (min-width: 1440px) {
             font-size: 18px;
         }
+
         &:before {
             width: 100%;
             height: 1px;
@@ -89,6 +97,7 @@ header {
             background: $c-nav;
             transition: all 1s ease-in-out;
         }
+
         &:hover {
             &:before {
                 content: '';
@@ -102,9 +111,11 @@ header {
         color: $c-logo;
         font-weight: 600;
         font-size: 30px;
+
         @media screen and (min-width: 1024px) {
             font-size: 34px;
         }
+
         @media screen and (min-width: 1440px) {
             font-size: 38px;
         }
@@ -114,16 +125,20 @@ header {
 .header__icon {
     background: #fff;
     border: 1px solid #fff;
+
     &:focus {
         outline: none;
     }
+
     i {
         color: $c-logo;
         font-size: 26px;
+
         &.fa-close {
             display: none;
         }
     }
+
     @media screen and (min-width: 768px) {
         display: none;
     }
@@ -131,18 +146,23 @@ header {
 
 body.header__icon--close {
     overflow: hidden;
+
     @media screen and (min-width: 768px) {
         overflow: auto;
     }
+
     i {
         transition: all 1s ease-in-out;
+
         &.fa-close {
             display: block;
         }
+
         &.fa-bars {
             display: none;
         }
     }
+
     .header__nav {
         transition: all 1s ease-in-out;
         transform: translateX(0%);
@@ -152,13 +172,17 @@ body.header__icon--close {
 //hero
 .main {
     padding-top: 70px;
+
     .main--bg {
         padding: 30px 0;
-        margin-bottom: 40px;
-        background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpcRkYYpsMCpoolNTLwMg9bMG5U3Bn7uMfHY9wRbg6RsiJmz8Clw");
-        background-size: cover;
+        background-image: url('../../assets/img/motobike.gif');
+        background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
+
+        // @media screen and (max-width: 768px) {
+        //     background-size: contain;
+        // }
     }
 }
 
@@ -168,17 +192,17 @@ body.header__icon--close {
 }
 
 .block-item {
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     background: #fff;
-    @media screen and (min-width: 768px) {
-        margin-bottom: 40px;
-    }
-    @media screen and (min-width: 1280px) {
-        margin-bottom: 60px;
-    }
-    @media screen and (min-width: 1440px) {
-        margin-bottom: 80px;
-    }
+    // @media screen and (min-width: 768px) {
+    //     margin-bottom: 40px;
+    // }
+    // @media screen and (min-width: 1280px) {
+    //     margin-bottom: 60px;
+    // }
+    // @media screen and (min-width: 1440px) {
+    //     margin-bottom: 80px;
+    // }
 }
 
 .hero__container {
@@ -186,28 +210,34 @@ body.header__icon--close {
 }
 
 .hero__inner {
-    width: 50vw;
-    height: 50%;
+    width: 28vw;
+    height: 21%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 16%;
+    left: 18%;
     transform: translate3d(-50%, -50%, 0);
-    background: rgba(#fff, 0.85);
+    background: #faefc6;
+    opacity: 0.8;
 }
 
 .hero__message {
-    font-size: 3vw;
+    font-size: 30px;
     font-weight: 600;
+
+    span {
+        font-size: 16px;
+    }
 }
 
 .global-figure {
     width: 100%;
     background-position: center;
-    background-size: cover;
+    // background-size: cover;
     background-repeat: no-repeat;
+
     &:before {
         display: block;
         content: '';
@@ -221,6 +251,11 @@ footer {
     align-items: center;
     justify-content: center;
     background: $c-logo;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+
     .footer__content {
         color: #ffffff;
         font-size: 20px;
