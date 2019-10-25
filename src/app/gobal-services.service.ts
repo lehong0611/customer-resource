@@ -32,4 +32,8 @@ export class GobalServicesService {
     return this.http.delete(`${this.baseUrl}/order/deleteOrderById/${id}`);
   }
 
+  getAllAgency() {
+    return this.http.get(`${this.baseUrl}/branch/agencys`);
+  }
+
 }

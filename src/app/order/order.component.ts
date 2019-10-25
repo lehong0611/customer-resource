@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
-import { Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { GobalServicesService } from 'app/gobal-services.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Swal from 'sweetalert2';
 
 declare const $: any;
 
@@ -16,36 +15,21 @@ declare const $: any;
 })
 export class OrderComponent implements OnInit {
 
-  @ViewChild('detailOrder', { static: true }) detailOrder: TemplateRef<any>;
-  @ViewChild('reject', { static: true }) reject: TemplateRef<any>;
   @ViewChild('addOrder', { static: true }) addOrder: TemplateRef<any>;
-
-  // start fake data
-  listWaitingAccept: any[];
-  listWaitingTake: any[];
-  listNewOrders: any[];
-  listAssigning: any[];
-  listAssigned: any[];
-  listTransferOrders: any[];
-  listSuccessOrders: any[];
-  listFailOrders: any[];
-  listReTransferOrders: any[];
-  // end fake data
-  isUserSupper: true;
+  @ViewChild('reasonText', { static: true }) reasonText: TemplateRef<any>;
   Order: any;
   listCustomer: any[];
-  isReject: any;
   status: any;
   listTabs = [
-    {key: 'created', text: 'Mới tạo'},
-    {key: 'waiting', text: 'Chờ xác nhận'},
-    {key: 'unavailable', text: 'Chờ lấy'},
-    {key: 'taken', text: 'Shipper đã lấy'},
-    {key: 'transfering', text: 'Đang giao'},
-    {key: 'success', text: 'Thành công'},
-    {key: 'failed', text: 'Thất bại'},
-    {key: 'return', text: 'Chờ trả lại'},
-    {key: 'cancelled', text: 'Đã hủy'}
+    { key: 'created', text: 'Mới tạo' },
+    { key: 'waiting', text: 'Chờ xác nhận' },
+    { key: 'unavailable', text: 'Chờ lấy' },
+    { key: 'taken', text: 'Shipper đã lấy' },
+    { key: 'transfering', text: 'Đang giao' },
+    { key: 'success', text: 'Thành công' },
+    { key: 'failed', text: 'Thất bại' },
+    { key: 'return', text: 'Chờ trả lại' },
+    { key: 'cancelled', text: 'Bị từ chối' }
   ]
   active = false;
   listOrder: any[];
@@ -58,6 +42,18 @@ export class OrderComponent implements OnInit {
   pageSize = 8;
   search = new FormControl();
   isUpdate: boolean;
+  validatePhone = '(09[1-9]|03[2-9]|07[6-9]|07[0]|05[2|6|8|9]|08[1-6]|08[8|9])+([0-9]{7})';
+  initStatus: any;
+  reason: string;
+
+  listKindOfOrder = [
+    { value: 0, text: 'Thời trang - Phụ kiện' },
+    { value: 1, text: 'Sức khỏe - Làm đẹp' },
+    { value: 2, text: 'Hàng tiêu dùng - Thực phẩm' },
+    { value: 3, text: 'Phụ kiện - Thiết bị số - Thiết bị điện tử' },
+    { value: 4, text: 'Hàng gia dụng - Cơ khí' },
+    { value: 5, text: 'Văn phòng phẩm - Thủ công' }
+  ];
 
   constructor(private dialog: MatDialog,
     private formBuilder: FormBuilder,
@@ -65,13 +61,27 @@ export class OrderComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.initStatus = 'created';
+    this.changeTab('created');
     this.addForm = this.formBuilder.group({
       OrderId: [null],
       SenderName: ['', Validators.required],
-      SenderPhone: ['', Validators.required],
+      SenderPhone: ['', Validators.compose(
+        [
+          Validators.required,
+          Validators.pattern(this.validatePhone),
+          Validators.maxLength(10)
+        ]
+      )],
       SenderAddress: ['', Validators.required],
       ReceiverName: ['', Validators.required],
-      ReceiverPhone: ['', Validators.required],
+      ReceiverPhone: ['', Validators.compose(
+        [
+          Validators.required,
+          Validators.pattern(this.validatePhone),
+          Validators.maxLength(10)
+        ]
+      )],
       ReceiverAddress: ['', Validators.required],
       Weight: [null, Validators.required],
       Kind: ['', Validators.required],
@@ -80,26 +90,6 @@ export class OrderComponent implements OnInit {
       Note: [''],
       OrderStatusName: ['']
     });
-    this.changeTab('created');
-  }
-
-  private _filter(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    return this.listCustomer.filter(option => option['fullname'].toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  accept(order: any) {
-    this.Order = order;
-    this.isReject = false;
-    this.dialog.open(this.detailOrder, {
-      width: '60%',
-      autoFocus: true,
-      disableClose: true
-    });
-  }
-
-  rejectOrder() {
-    console.log('hihi');
   }
 
   changeTab(status) {
@@ -129,30 +119,26 @@ export class OrderComponent implements OnInit {
     }
   }
 
-  onDetailOrder(order) {
-    this.Order = order;
-    this.formShipper.valueChanges.subscribe((res: any) => {
-      this.filteredOptions = this._filter(res);
-      console.log(this.filteredOptions);
-    });
-    this.dialog.open(this.detailOrder, {
-      width: '80%',
-      autoFocus: true,
-      disableClose: true
-    });
-  }
-
-  openModalReject() {
-    this.dialog.open(this.reject, {
-      width: '30%',
-      autoFocus: true,
-    });
+  bindKindOrder(text) {
+    switch (text) {
+      case 0:
+        return 'Thời trang - Phụ kiện';
+      case 1:
+        return 'Sức khỏe - Làm đẹp';
+      case 2:
+        return 'Hàng tiêu dùng - Thực phẩm';
+      case 3:
+        return 'Phụ kiện - Thiết bị số - Thiết bị điện tử';
+      case 4:
+        return 'Hàng gia dụng - Cơ khí';
+      default:
+        return 'Văn phòng phẩm - Thủ công'
+    }
   }
 
   onAddOrderModal(order: any) {
     this.isUpdate = false;
     if (order) {
-      console.log(order);
       this.isUpdate = true;
       this.addForm.controls['OrderId'].setValue(order.OrderId);
       this.addForm.controls['SenderName'].setValue(order.SenderName);
@@ -169,9 +155,9 @@ export class OrderComponent implements OnInit {
       this.addForm.controls['OrderStatusName'].setValue(order.OrderStatus.name);
     } else {
       this.addForm.reset();
-      this.addForm.controls['SenderName'].setValue('');
-      this.addForm.controls['SenderPhone'].setValue('');
-      this.addForm.controls['SenderAddress'].setValue('');
+      this.addForm.controls['SenderName'].setValue('Trần Thu Thảo');
+      this.addForm.controls['SenderPhone'].setValue('0961236060');
+      this.addForm.controls['SenderAddress'].setValue('66 Trần Đại Nghĩa, Đồng Tâm, Hai Bà Trưng, Hà Nội');
       this.addForm.controls['ReceiverName'].setValue('');
       this.addForm.controls['ReceiverPhone'].setValue('');
       this.addForm.controls['ReceiverAddress'].setValue('');
@@ -193,12 +179,15 @@ export class OrderComponent implements OnInit {
   }
 
   saveNewOrder() {
-    this.addForm.value.CreatedUserId = 0;
-    this.addForm.value.OrderStatus = 'created'
+    this.addForm.value.CreatedUserId = 18;
+    this.addForm.value.OrderStatusName = 'created';
+    this.addForm.value.OrderStatusTime = new Date();
     const newOrder = this.addForm.value;
     this.service.addNewOrder(newOrder).subscribe(res => {
       console.log(res);
+      this.initStatus = 'created';
       this.changeTab('created');
+      this.addForm.reset();
       this.dialog.closeAll();
     })
   }
@@ -210,7 +199,7 @@ export class OrderComponent implements OnInit {
       pageCurrent: this.page,
       pageSize: this.pageSize
     }
-    const CreatedUserId = 0;
+    const CreatedUserId = 18;
     this.service.getOrdersByStatus(status, CreatedUserId, pagination.pageCurrent, pagination.pageSize).subscribe((res: any) => {
       this.spinner.hide();
       this.listOrder = res.results.orders;
@@ -226,17 +215,13 @@ export class OrderComponent implements OnInit {
       pageCurrent: this.page,
       pageSize: this.pageSize
     }
-    const CreatedUserId = 0;
+    const CreatedUserId = 18;
     this.service.getOrdersByStatus(status, CreatedUserId, pagination.pageCurrent, pagination.pageSize).subscribe((res: any) => {
       this.spinner.hide();
       this.listOrder = res.results.orders;
+      console.log(this.listOrder);
     })
   }
-
-  // bindCodeOrder(text): string {
-  //   const code = text.substr(0, 11);
-  //   return code;
-  // }
 
   searchOrder() {
     const key = this.search.value;
@@ -258,9 +243,83 @@ export class OrderComponent implements OnInit {
 
   delete(id) {
     this.service.deleteOrder(id).subscribe(res => {
+      this.initStatus = 'created';
       this.changeTab('created');
     })
   }
 
-  sendToAgency(){}
+  sendToAgency(order) {
+    let listAgency = [];
+    let listDistBetween = [];
+    let listCalculation = [];
+    let userLat = 21.0010429;
+    let userLng = 105.8451294;
+    this.service.getAllAgency().subscribe((res: any) => {
+      console.log(res);
+      listAgency = res.results;
+      listAgency.forEach(agency => {
+        let dist = this.calculateTwoCoordinates(userLat, userLng, agency.brand.Address.lat, agency.brand.Address.lng);
+        listDistBetween.push({
+          agencyId: agency.brand.AgencyId,
+          dist: dist
+        });
+      });
+      listCalculation = listDistBetween.map(x => {
+        return x.dist;
+      })
+      let minDistance = Math.min(...listCalculation);
+      let choseAgency = listDistBetween.find(x => {
+        return x.dist === minDistance;
+      });
+      const updateOrder = order;
+      updateOrder.OrderStatusName = 'waiting';
+      updateOrder.OrderStatusTime = new Date();
+      updateOrder.AcceptAdminId = choseAgency.agencyId;
+      this.service.updateOrder(order.OrderId, updateOrder).subscribe((res: any) => {
+        this.initStatus = 'created';
+        this.changeTab('created');
+      })
+    })
+  }
+
+  calculateTwoCoordinates(lat1, lng1, lat2, lng2) {
+    const R = 6371;
+    if ((lat1 === lat2) && (lng1 === lng2)) {
+      return 0;
+    } else {
+      let dLat = (lat1 - lat2) * Math.PI / 180;
+      let dLng = (lng1 - lng2) * Math.PI / 180;
+      let distance = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      let c = 2 * Math.atan2(Math.sqrt(distance), Math.sqrt(1 - distance));
+      let d = Math.round(R * c * 1000);
+      return d;
+    }
+  }
+
+  cancelToAgency(order, status) {
+    const updateOrder = order;
+    updateOrder.OrderStatusName = 'created';
+    updateOrder.OrderStatusTime = new Date();
+    this.service.updateOrder(order.OrderId, updateOrder).subscribe((res: any) => {
+      if (status === 'waiting') {
+        this.initStatus = 'waiting';
+        this.changeTab('waiting');
+      } else {
+        this.initStatus = 'unavailable';
+        this.changeTab('unavailable');
+      }
+    })
+  }
+
+  openModalReject(reason) {
+    this.reason = reason;
+    this.dialog.open(this.reasonText, {
+      width: '25%',
+      autoFocus: true,
+      disableClose: true
+    });
+    //Swal.fire(reason);
+  }
 }

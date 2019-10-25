@@ -3,13 +3,14 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MomentModule } from 'ngx-moment';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { OrderComponent } from '../../order/order.component';
+//import { FeeComponent } from '../../fee/fee.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { OrderComponent } from '../../order/order.component';
   ],
   declarations: [
     UserProfileComponent,
-    OrderComponent
+    OrderComponent,
+    //FeeComponent
   ]
 })
 

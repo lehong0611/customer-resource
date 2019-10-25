@@ -29,42 +29,35 @@
         position: relative;
 
         .row {
-            .col-md-3 {
-                .card {
-                    .card-header {
-                        border-bottom: 1px solid rgba(0, 0, 0, .125);
 
-                        &.bg-customer {
-                            background: #eee;
-                        }
+            &.empty-order {
+                justify-content: center;
+            }
+
+            .col-md-3 {
+
+                .card {
+                    border: 1px solid #00bcd4;
+
+                    .card-header {
+                        border-bottom: 1px solid #00bcd4;
                     }
 
                     .card-body {
-                        border-bottom: 1px solid rgba(0, 0, 0, .125);
 
                         .wrapper-info {
                             display: flex;
-                            // height: 43px;
+                            border-bottom: 1px dotted #ddd;
 
                             .material-icons {
                                 font-size: 18px;
                                 margin: 2px 4px;
                             }
-
-                            .empty-money {
-                                color: #cf3a3b;
-                            }
                         }
                     }
 
                     .card-footer {
-                        .wrapper-footer {
-                            display: flex;
-
-                            .material-icons {
-                                margin: 0 5px;
-                            }
-                        }
+                        border-top: 1px solid #00bcd4;
 
                         .btn {
                             padding: 0;
@@ -94,8 +87,7 @@
 
         .tab-content {
             .card-header {
-                background: #798b9b;
-                color: #fff;
+                background: #dae8f4;
                 padding: 0.75rem 0.25rem;
             }
         }
@@ -104,58 +96,10 @@
     .card-header.card-header-icon+.card-content .card-title {
         padding-bottom: 15px;
     }
-
-    .card-title-custome {
-        margin-left: 74px;
-    }
-
-    .form-group.form-group-sm {
-        padding-bottom: 10px;
-        margin: 20px 0 0 0;
-        font-size: 11px;
-    }
-
-    .table-custom {
-        margin-bottom: 15px;
-    }
-
-    .icon-accept {
-        background: #f44336ed;
-        color: #fff;
-    }
-
-    .icon-reject {
-        background: #4caf50;
-        color: #fff;
-    }
-}
-
-.detail-order {
-    .info-person {
-        display: flex;
-
-        .material-icons {
-            font-size: 20px;
-        }
-    }
-}
-
-.contact {
-    border: 1px solid;
-
-    .card-header {
-        border-bottom: 1px solid burlywood;
-    }
 }
 
 .mat-dialog-actions {
     justify-content: flex-end;
-}
-
-.text-reject {
-    width: 100%;
-    // margin: 0 45px;
-    padding: 10px;
 }
 
 .add-order {
@@ -193,6 +137,6 @@
     }
 }
 
-.page {
-    justify-content: flex-end;
-}
+// .page {
+//     justify-content: flex-end;
+// }

@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { HomeComponent } from './home/home.component';
-import { FeeComponent } from './fee/fee.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 
@@ -26,10 +25,6 @@ const routes: Routes = [
   {
     path: 'dang-ky',
     component: SignupComponent
-  },
-  {
-    path: 'bieu-phi',
-    component: FeeComponent
   },
   {
     path: '',

@@ -16,7 +16,6 @@ import {
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { HomeComponent } from './home/home.component';
-import { FeeComponent } from './fee/fee.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 
@@ -38,7 +37,6 @@ import { SignupComponent } from './signup/signup.component';
     AppComponent,
     AdminLayoutComponent,
     HomeComponent,
-    FeeComponent,
     LoginComponent,
     SignupComponent
 
