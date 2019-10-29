@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 $c-logo: #fff;
 $c-nav: #fff;
 $c-primary: #f7941f;
-=======
-$c-logo: #046767;
-$c-nav: #1f9c9c;
-
->>>>>>> c63d5b9df2245b452d74f8a0e361cff4b61c4ee2
 body {
     margin: 0;
     transition: all 1s ease-in-out;
@@ -181,22 +175,11 @@ body.header__icon--close {
 
     .main--bg {
         padding: 30px 0;
-<<<<<<< HEAD
         margin-bottom: 40px;
         // background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpcRkYYpsMCpoolNTLwMg9bMG5U3Bn7uMfHY9wRbg6RsiJmz8Clw");
         // background-size: cover;
         // background-repeat: no-repeat;
         // background-position: center;
-=======
-        background-image: url('../../assets/img/motobike.gif');
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-
-        // @media screen and (max-width: 768px) {
-        //     background-size: contain;
-        // }
->>>>>>> c63d5b9df2245b452d74f8a0e361cff4b61c4ee2
     }
 }
 
