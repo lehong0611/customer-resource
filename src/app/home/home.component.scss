@@ -1,8 +1,10 @@
-$c-logo: #046767;
-$c-nav: #1f9c9c;
+$c-logo: #fff;
+$c-nav: #fff;
+$c-primary: #f7941f;
 body {
     margin: 0;
     transition: all 1s ease-in-out;
+    background-color: #fff;
 }
 
 li,
@@ -19,8 +21,7 @@ header {
     position: fixed;
     width: 100%;
     height: 70px;
-    box-shadow: 0 8px 6px -6px #f1f1f1;
-    background: #ffffff;
+    background: $c-primary;
     z-index: 999;
 }
 
@@ -38,7 +39,7 @@ header {
     position: absolute;
     top: 0;
     left: 0;
-    background: $c-nav;
+    background: $c-primary;
     transform: translateX(-100%);
     transition: all 1s ease-in-out;
     @media screen and (min-width: 768px) {
@@ -46,7 +47,7 @@ header {
         display: flex;
         justify-content: flex-end;
         position: static;
-        background: #fff;
+        background: $c-primary;
         transform: translateX(0%);
     }
 }
@@ -155,10 +156,10 @@ body.header__icon--close {
     .main--bg {
         padding: 30px 0;
         margin-bottom: 40px;
-        background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpcRkYYpsMCpoolNTLwMg9bMG5U3Bn7uMfHY9wRbg6RsiJmz8Clw");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+        // background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpcRkYYpsMCpoolNTLwMg9bMG5U3Bn7uMfHY9wRbg6RsiJmz8Clw");
+        // background-size: cover;
+        // background-repeat: no-repeat;
+        // background-position: center;
     }
 }
 
@@ -182,25 +183,42 @@ body.header__icon--close {
 }
 
 .hero__container {
+    padding: 40px;
     position: relative;
+    align-items: center;
+    justify-content: space-between;
+    background: $c-primary;
+    @media screen and (min-width: 768px) {  
+        display: flex;
+    }
+    img {
+        max-width: 100vw;
+        @media screen and (min-width: 768px) {
+            max-width: 32vw;
+        }
+    }
 }
 
 .hero__inner {
-    width: 50vw;
-    height: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    background: rgba(#fff, 0.85);
+    max-width: 620px;
+    color: #fff;
+    p {
+        font-size: 18px;
+        line-height: 1.42;
+        @media screen and (min-width: 768px) {
+            font-size: 22px;
+        }
+    }
 }
 
 .hero__message {
-    font-size: 3vw;
+    margin-bottom: 30px;
+    font-size: 30px;
     font-weight: 600;
+    line-height: 1.2;
+    @media screen and (min-width: 768px) {
+        font-size: 36px;
+    }
 }
 
 .global-figure {
@@ -222,7 +240,72 @@ footer {
     justify-content: center;
     background: $c-logo;
     .footer__content {
-        color: #ffffff;
+        color: $c-primary;
         font-size: 20px;
+    }
+}
+
+.block-search {
+    &__container {
+        padding: 0 10px;
+        text-align: center;
+        .search-form {
+            max-width: 670px;
+            margin: 0 auto;
+            position: relative;
+            i {
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+                color: $c-primary;
+                font-size: 28px;
+            }
+        }
+        input {
+            width: 100%;
+            height: 50px;
+            padding-right: 50px;
+            position: relative;
+            text-align: center;
+            border-radius: 30px;
+            box-shadow: 0 3px 20px -6px rgba(0, 0, 0, 0.2);
+            border: 1px solid #f1f1f1;
+        }
+    }
+}
+
+.card-two-up {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    @media screen and (min-width: 768px) {
+        display: flex;
+        text-align: left;
+    }
+    &.card-convert {
+        flex-direction: row-reverse;
+    }
+    .card__inner {
+        margin: 10px 40px;
+        @media screen and (min-width: 768px) {
+            max-width: 500px;
+        }
+        h3 {
+            color: $c-primary;
+            font-weight: 700;
+        }
+    }
+    img {
+        max-width: 400px;
+        margin: 10px 40px;
+    }
+}
+
+.grid-four {
+    h2 {
+        margin-bottom: 30px;
+        text-align: center;
+        color: $c-primary;
     }
 }
