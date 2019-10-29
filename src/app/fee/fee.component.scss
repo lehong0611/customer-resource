@@ -1,0 +1,65 @@
+@import '../../assets/scss/material-dashboard.scss';
+
+.card.card-manage {
+    [data-background-color] {
+        margin: -20px 15px 0;
+        border-radius: 3px;
+        padding: 15px;
+        position: absolute;
+    }
+
+    [data-background-color="purple"] {
+        background: linear-gradient(60deg, $purple-400, $purple-600);
+        @include shadow-big-color($brand-primary);
+    }
+
+    .card-header.card-header-icon {
+        float: left;
+
+        //width: 64px;
+
+        i {
+            width: 33px;
+            height: 33px;
+            text-align: center;
+            line-height: 33px;
+        }
+    }
+
+    .card-content {
+        padding: 15px 20px;
+        position: relative;
+    }
+
+    .card-header.card-header-icon+.card-content .card-title {
+        padding-bottom: 15px;
+    }
+
+    .card-title-custome {
+        margin-left: 74px;
+    }
+
+    .form-group.form-group-sm {
+        padding-bottom: 10px;
+        margin: 20px 0 0 0;
+        font-size: 11px;
+    }
+}
+
+//Dialog
+.radio-custom {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        color: #3C4858;
+    }
+}
+
+.mat-dialog-actions {
+    justify-content: flex-end;
+}
+
+.mat-radio-button {
+    margin-left: 200px;
+}
