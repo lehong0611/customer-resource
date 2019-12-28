@@ -33,3 +33,7 @@ $enable-shadows: true; // enable shadows, set to false to turn off shadows
 @import "variables/snackbar";
 
 @import "variables/bootstrap-material-design";
+
+$padding-default-horizontal:20px !default;
+$padding-base-vertical:     6px !default;
+$padding-base-horizontal:   12px !default;

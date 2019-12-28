@@ -1,0 +1,12 @@
+.card-update {
+    background: #13CE95;
+}
+
+.card-update .card-title {
+    color: #fff;
+}
+
+.btn-update {
+    background: #13CE95 !important;
+    color: #fff;
+}

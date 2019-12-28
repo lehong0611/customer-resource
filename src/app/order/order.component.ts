@@ -4,9 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { GobalServicesService } from 'app/gobal-services.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import Swal from 'sweetalert2';
-
-declare const $: any;
 
 @Component({
   selector: 'app-order',
@@ -23,13 +20,13 @@ export class OrderComponent implements OnInit {
   listTabs = [
     { key: 'created', text: 'Mới tạo' },
     { key: 'waiting', text: 'Chờ xác nhận' },
-    { key: 'unavailable', text: 'Chờ lấy' },
+    { key: 'unavailable', text: 'Chờ lấy về đại lý' },
     { key: 'taken', text: 'Shipper đã lấy' },
+    { key: 'wait-trans', text: 'Chờ giao' },
     { key: 'transfering', text: 'Đang giao' },
-    { key: 'success', text: 'Thành công' },
-    { key: 'failed', text: 'Thất bại' },
-    { key: 'return', text: 'Chờ trả lại' },
-    { key: 'cancelled', text: 'Bị từ chối' }
+    { key: 'success', text: 'Hoàn thành' },
+    { key: 'cancelled', text: 'Bị từ chối' },
+    { key: 'failed', text: 'Giao không thành công' }
   ]
   active = false;
   listOrder: any[];
@@ -109,13 +106,11 @@ export class OrderComponent implements OnInit {
       case 'transfering':
         return 'Đang giao';
       case 'success':
-        return 'Thành công';
-      case 'failed':
-        return 'Thất bại';
-      case 'return':
-        return 'Chờ trả lại';
+        return 'Hoàn thành';
       case 'cancelled':
-        return 'Đã hủy';
+        return 'Bị từ chối';
+      case 'failed':
+        return 'Giao không thành công'
     }
   }
 
@@ -155,9 +150,9 @@ export class OrderComponent implements OnInit {
       this.addForm.controls['OrderStatusName'].setValue(order.OrderStatus.name);
     } else {
       this.addForm.reset();
-      this.addForm.controls['SenderName'].setValue('Trần Thu Thảo');
-      this.addForm.controls['SenderPhone'].setValue('0961236060');
-      this.addForm.controls['SenderAddress'].setValue('66 Trần Đại Nghĩa, Đồng Tâm, Hai Bà Trưng, Hà Nội');
+      this.addForm.controls['SenderName'].setValue(localStorage.getItem('full-name'));
+      this.addForm.controls['SenderPhone'].setValue(localStorage.getItem('phone'));
+      this.addForm.controls['SenderAddress'].setValue(localStorage.getItem('address'));
       this.addForm.controls['ReceiverName'].setValue('');
       this.addForm.controls['ReceiverPhone'].setValue('');
       this.addForm.controls['ReceiverAddress'].setValue('');
@@ -179,7 +174,7 @@ export class OrderComponent implements OnInit {
   }
 
   saveNewOrder() {
-    this.addForm.value.CreatedUserId = 18;
+    // this.addForm.value.CreatedUserId = 18;
     this.addForm.value.OrderStatusName = 'created';
     this.addForm.value.OrderStatusTime = new Date();
     const newOrder = this.addForm.value;
@@ -199,8 +194,8 @@ export class OrderComponent implements OnInit {
       pageCurrent: this.page,
       pageSize: this.pageSize
     }
-    const CreatedUserId = 18;
-    this.service.getOrdersByStatus(status, CreatedUserId, pagination.pageCurrent, pagination.pageSize).subscribe((res: any) => {
+    // const CreatedUserId = 18;
+    this.service.getOrdersByStatus(status, pagination.pageCurrent, pagination.pageSize).subscribe((res: any) => {
       this.spinner.hide();
       this.listOrder = res.results.orders;
       this.totalCount = res.results.counts;
@@ -215,8 +210,8 @@ export class OrderComponent implements OnInit {
       pageCurrent: this.page,
       pageSize: this.pageSize
     }
-    const CreatedUserId = 18;
-    this.service.getOrdersByStatus(status, CreatedUserId, pagination.pageCurrent, pagination.pageSize).subscribe((res: any) => {
+    // const CreatedUserId = 18;
+    this.service.getOrdersByStatus(status, pagination.pageCurrent, pagination.pageSize).subscribe((res: any) => {
       this.spinner.hide();
       this.listOrder = res.results.orders;
       console.log(this.listOrder);
@@ -226,7 +221,15 @@ export class OrderComponent implements OnInit {
   searchOrder() {
     const key = this.search.value;
     this.service.findOrderByCode(key).subscribe((res: any) => {
+      this.initStatus = '';
       this.listOrder = res.results;
+      // for (let i = 0; i < this.listTabs.length; i++) {
+      //   console.log(this.listTabs[i]);
+      //   if (this.listOrder[0].OrderStatus.name === this.listTabs[i].key) {
+      //     this.initStatus = this.listTabs[i].key;
+      //   }
+      //   // break;
+      // }
       this.search.setValue('');
     })
   }
@@ -252,13 +255,15 @@ export class OrderComponent implements OnInit {
     let listAgency = [];
     let listDistBetween = [];
     let listCalculation = [];
-    let userLat = 21.0010429;
-    let userLng = 105.8451294;
+    let userLat = localStorage.getItem('lat');
+    let userLng = localStorage.getItem('lng');
+    console.log(userLat, 'user', userLng);
     this.service.getAllAgency().subscribe((res: any) => {
-      console.log(res);
       listAgency = res.results;
       listAgency.forEach(agency => {
+        console.log(agency);
         let dist = this.calculateTwoCoordinates(userLat, userLng, agency.brand.Address.lat, agency.brand.Address.lng);
+        console.log(dist);
         listDistBetween.push({
           agencyId: agency.brand.AgencyId,
           dist: dist
@@ -274,7 +279,7 @@ export class OrderComponent implements OnInit {
       const updateOrder = order;
       updateOrder.OrderStatusName = 'waiting';
       updateOrder.OrderStatusTime = new Date();
-      updateOrder.AcceptAdminId = choseAgency.agencyId;
+      updateOrder.AdminId = choseAgency.agencyId;
       this.service.updateOrder(order.OrderId, updateOrder).subscribe((res: any) => {
         this.initStatus = 'created';
         this.changeTab('created');
@@ -320,6 +325,5 @@ export class OrderComponent implements OnInit {
       autoFocus: true,
       disableClose: true
     });
-    //Swal.fire(reason);
   }
 }

@@ -1,47 +1,33 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app.routing';
-import { ComponentsModule } from './components/components.module';
-import { MaterialModule } from './material.module';
+import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptorService } from './auth-interceptor.service';
 
 import { AppComponent } from './app.component';
-
-import {
-  AgmCoreModule
-} from '@agm/core';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
-    ComponentsModule,
     RouterModule,
     AppRoutingModule,
-    MaterialModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
     })
   ],
   declarations: [
-    AppComponent,
-    AdminLayoutComponent,
-    HomeComponent,
-    LoginComponent,
-    SignupComponent
-
+    AppComponent
   ],
-  providers: [HttpClient],
+  providers: [
+    HttpClient,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,3 +1,94 @@
-<p>
-  signup works!
-</p>
+<div class="wrapper wrapper-full-page">
+  <div class="full-page login-page">
+    <!--  you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-sm-6 offset-md-3 offset-sm-3">
+            <form [formGroup]="registerForm">
+              <div class="card card-login card-hidden">
+                <div class="card-header text-center" data-background-color="green">
+                  <h4 class="card-title">WELCOME</h4>
+                </div>
+                <div class="card-content">
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">person</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label" for="pass">Họ và tên</label>
+                      <input type="text" class="form-control input-custome" formControlName="FullName">
+                    </div>
+                  </div>
+                  <div class="invalid-feedback error" *ngIf="registerForm.get('FullName').touched">
+                    <div *ngIf="registerForm.get('FullName').hasError('required')">Vui lòng nhập họ và tên
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">stay_current_portrait</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label" for="pass">Số điện thoại</label>
+                      <input type="text" class="form-control input-custome" formControlName="Phone">
+                    </div>
+                  </div>
+                  <div class="invalid-feedback error" *ngIf="registerForm.get('Phone').touched">
+                    <div *ngIf="registerForm.get('Phone').hasError('required')">Vui lòng nhập số điện thoại
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">location_city</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label" for="pass">Địa chỉ</label>
+                      <input type="text" class="form-control input-custome" formControlName="Address">
+                    </div>
+                  </div>
+                  <div class="invalid-feedback error" *ngIf="registerForm.get('Address').touched">
+                    <div *ngIf="registerForm.get('Address').hasError('required')">Vui lòng nhập địa chỉ
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">email</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label" for="email">Email</label>
+                      <input type="email" class="form-control input-custome" formControlName="Email">
+                    </div>
+                  </div>
+                  <div class="invalid-feedback error" *ngIf="registerForm.get('Email').touched">
+                    <div *ngIf="registerForm.get('Email').hasError('required')">Vui lòng nhập email
+                    </div>
+                    <div *ngIf="registerForm.get('Email').hasError('email')">Email không hợp lệ</div>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">lock_outline</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label" for="pass">Mật khẩu</label>
+                      <input type="password" class="form-control input-custome" formControlName="Password">
+                    </div>
+                  </div>
+                  <div *ngIf="registerForm.get('Password').touched" class="invalid-feedback error">
+                    <div *ngIf="registerForm.get('Password').hasError('required')">Vui lòng nhập password</div>
+                    <div *ngIf="registerForm.get('Password').hasError('minlength')">Mật khẩu phải ít
+                      nhất 8 ký tự</div>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-simple btn-wd btn-lg" (click)="onSubmit()">Đăng
+                    ký</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="full-page-background" style="background-image: url(../../../assets/img/login.jpeg) "></div>
+  </div>
+</div>

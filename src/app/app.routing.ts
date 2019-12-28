@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
-
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
@@ -16,23 +12,25 @@ const routes: Routes = [
   },
   {
     path: 'trang-chu',
-    component: HomeComponent
+    loadChildren: './home/home.module#HomeModule'
   },
   {
     path: 'dang-nhap',
-    component: LoginComponent
+    loadChildren: './login/login.module#LoginModule'
   },
   {
     path: 'dang-ky',
-    component: SignupComponent
+    loadChildren: './signup/signup.module#SignupModule'
   },
   {
-    path: '',
-    component: AdminLayoutComponent,
-    children: [{
-      path: '',
-      loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-    }]
+    path: 'quan-ly-don-hang',
+    loadChildren: './order/order.module#OrderModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'thong-tin-ca-nhan',
+    loadChildren: './user-profile/user-profile.module#UserProfileModule',
+    canActivate: [AuthGuard]
   }
 ];
 
@@ -41,7 +39,8 @@ const routes: Routes = [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes, {
-      useHash: true
+      useHash: true,
+      preloadingStrategy: PreloadAllModules
     })
   ],
   exports: [

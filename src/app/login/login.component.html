@@ -1,3 +1,56 @@
-<p>
-  login works!
-</p>
+<div class="wrapper wrapper-full-page">
+  <div class="full-page login-page">
+    <!--  you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-sm-6 offset-md-3 offset-sm-3">
+            <form [formGroup]="loginForm">
+              <div class="card card-login card-hidden">
+                <div class="card-header text-center" data-background-color="green">
+                  <h4 class="card-title">WELCOME</h4>
+                </div>
+                <div class="card-content">
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">email</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label" for="email">Email</label>
+                      <input type="email" class="form-control input-custome" formControlName="Email">
+                    </div>
+                  </div>
+                  <div class="invalid-feedback error" *ngIf="loginForm.get('Email').touched">
+                    <div *ngIf="loginForm.get('Email').hasError('required')">Email chưa được nhập
+                    </div>
+                    <div *ngIf="loginForm.get('Email').hasError('email')">Email không hợp lệ</div>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="material-icons">lock_outline</i>
+                    </span>
+                    <div class="form-group label-floating">
+                      <label class="control-label" for="pass">Mật khẩu</label>
+                      <input type="password" class="form-control input-custome" formControlName="Password">
+                    </div>
+                  </div>
+                  <div *ngIf="loginForm.get('Password').touched" class="invalid-feedback error">
+                    <div *ngIf="loginForm.get('Password').hasError('required')">Mật khẩu chưa được
+                      nhập</div>
+                    <div *ngIf="loginForm.get('Password').hasError('minlength')">Mật khẩu phải ít
+                      nhất 8 ký tự</div>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-simple btn-wd btn-lg" (click)="onSubmit()">Đăng
+                    nhập</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="full-page-background" style="background-image: url(../../../assets/img/login.jpeg) "></div>
+  </div>
+</div>
