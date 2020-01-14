@@ -223,13 +223,6 @@ export class OrderComponent implements OnInit {
     this.service.findOrderByCode(key).subscribe((res: any) => {
       this.initStatus = '';
       this.listOrder = res.results;
-      // for (let i = 0; i < this.listTabs.length; i++) {
-      //   console.log(this.listTabs[i]);
-      //   if (this.listOrder[0].OrderStatus.name === this.listTabs[i].key) {
-      //     this.initStatus = this.listTabs[i].key;
-      //   }
-      //   // break;
-      // }
       this.search.setValue('');
     })
   }

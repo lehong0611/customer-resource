@@ -58,13 +58,11 @@ export class HomeComponent implements OnInit {
       case 'transfering':
         return 'Đang giao';
       case 'success':
-        return 'Thành công';
-      case 'failed':
-        return 'Thất bại';
-      case 'return':
-        return 'Chờ trả lại';
+        return 'Hoàn thành';
       case 'cancelled':
-        return 'Đã hủy';
+        return 'Bị từ chối';
+      case 'failed':
+        return 'Giao không thành công'
     }
   }
 
